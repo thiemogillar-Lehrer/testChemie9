@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chemie 9 – Dalton, Teilchen und Massenerhaltung</title>
+<style>
+:root{
+ --bg:#f3f6fa;--card:#fff;--ink:#172033;--muted:#64748b;--blue:#2859c7;
+ --blue2:#eaf0ff;--green:#137a4b;--greenbg:#eaf8f1;--red:#b42318;
+ --redbg:#fff0ee;--yellow:#9a6700;--yellowbg:#fff8df;--line:#d8e0ea;
+ --shadow:0 8px 28px rgba(20,40,70,.08)
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.5}
+header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--line)}
+.topbar{max-width:1100px;margin:auto;padding:13px 20px;display:flex;align-items:center;gap:18px}
+.brand{font-weight:800;white-space:nowrap}.progress-area{flex:1}
+.progress-top{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:5px}
+.progress{height:9px;background:#e7ebf1;border-radius:99px;overflow:hidden}
+.progress>div{height:100%;width:20%;background:var(--blue);transition:width .25s}
+main{max-width:1060px;margin:28px auto 70px;padding:0 18px}
+.step{display:none}.step.active{display:block}
+.hero,.card{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:25px;margin-bottom:18px}
+.hero{background:linear-gradient(135deg,#edf3ff 0%,#fff 75%)}
+.kicker{display:inline-block;background:var(--blue2);color:var(--blue);font-size:13px;font-weight:800;padding:5px 10px;border-radius:99px;margin-bottom:10px}
+h1{font-size:32px;line-height:1.15;margin:0 0 10px}h2{font-size:24px;margin:0 0 12px}h3{margin:14px 0 7px}
+.lead{font-size:18px}.muted{color:var(--muted)}
+.callout{background:#f7f9fc;border-left:5px solid var(--blue);padding:14px 16px;border-radius:10px;margin:15px 0}
+.merksatz{background:var(--greenbg);border-left-color:var(--green)}
+.info{background:#fff8e6;border-left-color:#e1a500}
+.option{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:12px 13px;margin:8px 0;cursor:pointer;background:#fff}
+.option:hover{background:#fafcff}.option input{margin-top:5px;transform:scale(1.15)}
+button,.button{font:inherit;font-weight:700;border:0;border-radius:11px;padding:11px 17px;cursor:pointer}
+.btn{background:var(--blue);color:#fff}.btn.secondary{background:#edf1f6;color:var(--ink)}.btn.green{background:var(--green);color:#fff}
+button:disabled{opacity:.45;cursor:not-allowed}
+.feedback{display:none;margin-top:14px;padding:12px 14px;border-radius:11px;font-weight:600}
+.feedback.ok{display:block;background:var(--greenbg);color:var(--green)}
+.feedback.bad{display:block;background:var(--redbg);color:var(--red)}
+.hint{display:none;background:var(--yellowbg);color:#735000;border-left:4px solid #e1a500;padding:10px 12px;border-radius:7px;margin-top:9px}
+.hint.show{display:block}
+.qblock{padding:8px 0 16px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:20px}
+.model-row{display:flex;align-items:center;gap:15px;flex-wrap:wrap;background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:17px}
+.molecule{display:inline-flex;align-items:center;gap:4px}.atom{width:34px;height:34px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;border:2px solid rgba(0,0,0,.12);box-shadow:inset 0 -3px 5px rgba(0,0,0,.12)}
+.H{background:#f4f4f4;color:#333}.O{background:#e94b4b;color:#fff}.C{background:#333;color:#fff}
+.Fe{background:#39a85a;color:#fff}.S{background:#f2c62f;color:#5b4300}
+.arrow{font-size:28px;font-weight:800;color:var(--blue)}
+.steps li{margin:10px 0}.field{margin:13px 0}.field label{font-weight:700;display:block;margin-bottom:5px}
+input[type=text],textarea{width:100%;font:inherit;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:#fff}
+textarea{min-height:105px;resize:vertical}
+.wordbank{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.word{background:var(--blue2);color:var(--blue);padding:7px 10px;border-radius:8px;cursor:pointer;font-weight:700}
+.word:hover{background:#dce6ff}
+.gap{display:inline-block;width:135px;border:0;border-bottom:2px solid var(--blue);background:#f8faff;padding:3px 5px;font:inherit}
+.video{display:flex;gap:18px;align-items:center;background:#f7f9fc;border-radius:14px;padding:18px}.play{font-size:42px}
+.draw-wrap{border:1px solid var(--line);border-radius:14px;padding:9px;background:#fafafa}
+canvas{width:100%;height:360px;background:#fff;border-radius:9px;display:block;touch-action:none;border:1px solid #e5e7eb}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.summary>div{background:#f7f9fc;padding:15px;border-radius:12px}
+.small{font-size:13px;color:var(--muted)}
+.chem-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.digital-reaction{background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:16px}
+.particles{display:flex;flex-wrap:wrap;gap:7px;min-height:58px;padding:10px;background:#fff;border-radius:10px;border:1px dashed #bcc7d6}
+.particle{width:32px;height:32px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;cursor:pointer;border:2px solid rgba(0,0,0,.12)}
+.particle.fe{background:#39a85a;color:#fff}.particle.s{background:#f2c62f;color:#5b4300}
+.feS{display:inline-flex;gap:2px;align-items:center;margin:4px}.feS .particle{cursor:default}
+@media(max-width:760px){h1{font-size:26px}.hero,.card{padding:18px}.chem-grid{grid-template-columns:1fr}.summary{grid-template-columns:1fr}.topbar{padding:11px 13px}.brand{font-size:14px}.video{align-items:flex-start}canvas{height:290px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="topbar">
+  <div class="brand">🧪 Chemie 9</div>
+  <div class="progress-area">
+   <div class="progress-top"><span id="stepLabel">Schritt 1 von 5</span><span id="percent">20 %</span></div>
+   <div class="progress"><div id="progressBar"></div></div>
+  </div>
+ </div>
+</header>
+
+<main>
+<!-- SCHRITT 1 -->
+<section class="step active" id="step1">
+ <div class="hero">
+  <div class="kicker">1 · Modelle und Teilchen</div>
+  <h1>Modelle helfen uns, Unsichtbares zu verstehen</h1>
+  <p class="lead">Chemische Reaktionen können wir nicht direkt auf Teilchenebene beobachten. Deshalb benutzen wir <strong>Modelle</strong>.</p>
+ </div>
+
+ <div class="card">
+  <h2>Modelle</h2>
+  <p><strong>Es gibt Dinge, die man nicht so einfach verstehen kann.</strong> Bei solchen Schwierigkeiten machen sich Wissenschaftler Modelle. Modelle vereinfachen den Sachverhalt sehr, damit die Thematik anschaulicher wird. Auch chemische Reaktionen kann man mit Modellen verständlich machen.</p>
+  <p>Ein Modell ist also eine <strong>vereinfachte Darstellung</strong> eines Sachverhalts. Es bildet nicht jedes Detail der Wirklichkeit ab, sondern konzentriert sich auf das, was für die jeweilige Fragestellung wichtig ist.</p>
+  <div class="callout info"><strong>Beispiele:</strong> In der Chemie können Kugeln, Knete, Playmais, Legosteine oder Murmeln als Baumaterialien für Modelle verwendet werden. Ein Teilchenmodell kann dadurch sichtbar machen, was auf der Ebene kleinster Teilchen passiert.</div>
+ </div>
+
+ <div class="card">
+  <h2>Teilchen</h2>
+  <p><strong>Alle Stoffe – egal, in welchem Zustand (fest, flüssig oder gasförmig) – sind aus kleinsten Teilchen aufgebaut.</strong> Bei der Darstellung dieser Teilchen benutzt man häufig Kugeln, aber auch Quader oder Zylinder sind möglich.</p>
+  <p>So würde man sich zum Beispiel das Metall <strong>Kupfer</strong> aus sehr vielen einzelnen Kupferteilchen vorstellen, die eng aneinanderliegen. Das Gleiche gilt für das Metall <strong>Aluminium</strong>. Da Kupfer ein anderer Stoff als Aluminium ist, würde man diesen Unterschied im Modell zum Beispiel durch <strong>Farbe, Form oder Größe</strong> der Teilchen darstellen.</p>
+  <p>Stoffe können auch aus <strong>Verbindungen von Teilchen</strong> bestehen. Modelle kann man durch unterschiedliche Materialien darstellen. Playmais, Körner, Legosteine, Knete oder Murmeln sind gute Baumaterialien.</p>
+  <div class="callout merksatz"><strong>Wichtig:</strong> Die „Teilchen“ sind in einem Modell vereinfachte Darstellungen. In dieser Lernumgebung verwenden wir Kugeln, um Atome bzw. Teilchen sichtbar zu machen.</div>
+ </div>
+
+ <div class="card">
+  <h2>Richtig oder falsch?</h2>
+  <div class="qblock"><p><strong>1.</strong> Modelle können komplizierte Sachverhalte vereinfachen.</p>
+   <label class="option"><input type="radio" name="tf1" value="r"> Richtig</label><label class="option"><input type="radio" name="tf1" value="f"> Falsch</label></div>
+  <div class="qblock"><p><strong>2.</strong> Alle Stoffe bestehen aus kleinsten Teilchen.</p>
+   <label class="option"><input type="radio" name="tf2" value="r"> Richtig</label><label class="option"><input type="radio" name="tf2" value="f"> Falsch</label></div>
+  <div class="qblock"><p><strong>3.</strong> Im Teilchenmodell müssen Teilchen immer als Kugeln dargestellt werden.</p>
+   <label class="option"><input type="radio" name="tf3" value="r"> Richtig</label><label class="option"><input type="radio" name="tf3" value="f"> Falsch</label></div>
+  <div class="qblock"><p><strong>4.</strong> Unterschiede zwischen Stoffen kann man in einem Modell zum Beispiel durch unterschiedliche Farben darstellen.</p>
+   <label class="option"><input type="radio" name="tf4" value="r"> Richtig</label><label class="option"><input type="radio" name="tf4" value="f"> Falsch</label></div>
+  <div class="qblock"><p><strong>5.</strong> Ein Modell muss jedes Detail der Wirklichkeit genau darstellen.</p>
+   <label class="option"><input type="radio" name="tf5" value="r"> Richtig</label><label class="option"><input type="radio" name="tf5" value="f"> Falsch</label></div>
+  <button class="btn" onclick="checkTF()">Antworten prüfen</button>
+  <div id="tfFeedback" class="feedback"></div>
+  <div id="tfHint" class="hint">Tipp: Denke daran, wozu Modelle dienen: Sie sollen etwas verständlicher machen und vereinfachen.</div>
+ </div>
+ <div class="nav"><button class="btn secondary" disabled>Zurück</button><button class="btn" id="next1" disabled onclick="go(2)">Weiter</button></div>
+</section>
+
+<!-- SCHRITT 2 -->
+<section class="step" id="step2">
+ <div class="hero">
+  <div class="kicker">2 · Modellversuch: Knallgasreaktion</div>
+  <h1>Wasserstoff + Sauerstoff → Wasser</h1>
+  <p class="lead">Du modellierst die Reaktion von Wasserstoffgas mit Sauerstoff. Dabei entsteht Wasser.</p>
+ </div>
+
+ <div class="card">
+  <h2>Kurze Information</h2>
+  <p>Wasserstoff und Sauerstoff sind die <strong>Ausgangsstoffe</strong> der Reaktion. Sie reagieren miteinander zu <strong>Wasser</strong>. Das Gemisch aus Wasserstoff und Sauerstoff kann sehr heftig reagieren – deshalb wird die Reaktion auch <strong>Knallgasreaktion</strong> genannt.</p>
+  <div class="callout info"><strong>Merke:</strong> Die kleinsten Teilchen eines Elements nennt man <strong>Atome</strong>. Sind mehrere Atome miteinander verbunden, spricht man – bei solchen Teilchenverbänden – von einem <strong>Molekül</strong>. Im Modell stellen wir Wasserstoff und Sauerstoff als zweiatomige Moleküle dar: H₂ und O₂. Wasser wird als H₂O dargestellt.</div>
+  <div class="model-row">
+   <div><div class="small">Wasserstoff</div><span class="molecule"><span class="atom H">H</span><span class="atom H">H</span></span></div>
+   <div>+</div>
+   <div><div class="small">Sauerstoff</div><span class="molecule"><span class="atom O">O</span><span class="atom O">O</span></span></div>
+   <div class="arrow">→</div>
+   <div><div class="small">Wasser</div><span class="molecule"><span class="atom H">H</span><span class="atom O">O</span><span class="atom H">H</span></span></div>
+  </div>
+ </div>
+
+ <div class="card">
+  <h2>Aufgabe 2a · Praktische Arbeit mit Knete</h2>
+  <ol class="steps">
+   <li>Forme aus den zur Verfügung gestellten <strong>weißen Kugeln Wasserstoff-Teilchen</strong> und aus den <strong>roten Kugeln Sauerstoff-Teilchen</strong>.</li>
+   <li>Stecke jeweils <strong>zwei weiße Kugeln</strong> zu einem Wasserstoff-Molekül und jeweils <strong>zwei rote Kugeln</strong> zu einem Sauerstoff-Molekül zusammen. Das sind deine Ausgangsstoffe.</li>
+   <li>Führe nun die „chemische Reaktion“ durch: Trenne die Kugeln wieder voneinander und ordne sie so neu an, dass <strong>Wasser-Moleküle</strong> entstehen. Für jedes Wasser-Molekül braucht ein Sauerstoff-Teilchen zwei Wasserstoff-Teilchen.</li>
+  </ol>
+  <div class="callout merksatz"><strong>Wichtig:</strong> Bei diesem Modell werden keine Kugeln weggenommen oder hinzugefügt. Nur ihre Anordnung wird verändert.</div>
+  <div class="model-row">
+   <div><div class="small">Ausgangsstoffe: 4 H₂ + 2 O₂</div>
+    <span class="molecule"><span class="atom H">H</span><span class="atom H">H</span></span>
+    <span class="molecule"><span class="atom H">H</span><span class="atom H">H</span></span>
+    <span class="molecule"><span class="atom H">H</span><span class="atom H">H</span></span>
+    <span class="molecule"><span class="atom H">H</span><span class="atom H">H</span></span>
+    <span class="molecule"><span class="atom O">O</span><span class="atom O">O</span></span>
+    <span class="molecule"><span class="atom O">O</span><span class="atom O">O</span></span>
+   </div>
+   <div class="arrow">→</div>
+   <div><div class="small">Produkte: 4 H₂O</div>
+    <span class="molecule"><span class="atom H">H</span><span class="atom O">O</span><span class="atom H">H</span></span>
+    <span class="molecule"><span class="atom H">H</span><span class="atom O">O</span><span class="atom H">H</span></span>
+    <span class="molecule"><span class="atom H">H</span><span class="atom O">O</span><span class="atom H">H</span></span>
+    <span class="molecule"><span class="atom H">H</span><span class="atom O">O</span><span class="atom H">H</span></span>
+   </div>
+  </div>
+  <p class="small">Fachlich notwendige Präzisierung: Mit 8 Wasserstoff-Atomen und 4 Sauerstoff-Atomen entstehen im Modell <strong>vier</strong> Wasser-Moleküle (4 H₂O), nicht zwei.</p>
+ </div>
+
+ <div class="card">
+  <h2>Aufgabe 2b · Zählen und erklären</h2>
+  <div class="field"><label>1. Wie viele weiße Wasserstoff-Teilchen lagen vor dem Umbauen auf deinem Tisch?</label><input id="m1" type="text" inputmode="numeric"></div>
+  <div class="field"><label>2. Wie viele rote Sauerstoff-Teilchen lagen vor dem Umbauen auf deinem Tisch?</label><input id="m2" type="text" inputmode="numeric"></div>
+  <div class="field"><label>3. Wie viele weiße Wasserstoff-Teilchen lagen nach dem Umbauen auf deinem Tisch?</label><input id="m3" type="text" inputmode="numeric"></div>
+  <div class="field"><label>4. Wie viele rote Sauerstoff-Teilchen lagen nach dem Umbauen auf deinem Tisch?</label><input id="m4" type="text" inputmode="numeric"></div>
+  <div class="field"><label>5. Erkläre in eigenen Worten: Warum zeigt dein Knetmodell das Gesetz von der Erhaltung der Masse?</label><textarea id="m5" placeholder="Beziehe dich auf die Anzahl der Teilchen/Atome vor und nach der Reaktion."></textarea></div>
+  <button class="btn" onclick="checkModel()">Antworten prüfen</button>
+  <div id="modelFeedback" class="feedback"></div>
+  <div id="modelHint" class="hint">Tipp: Zähle die einzelnen Kugeln, nicht die Moleküle. Welche Anzahl bleibt gleich?</div>
+ </div>
+ <div class="nav"><button class="btn secondary" onclick="go(1)">Zurück</button><button class="btn" id="next2" disabled onclick="go(3)">Weiter</button></div>
+</section>
+
+<!-- SCHRITT 3 -->
+<section class="step" id="step3">
+ <div class="hero">
+  <div class="kicker">3 · Lernvideo</div>
+  <h1>Das Atommodell nach Dalton</h1>
+  <p class="lead">Schau das Video an und achte darauf, welche Aussagen Dalton über Atome und chemische Reaktionen macht.</p>
+ </div>
+ <div class="card">
+  <div class="video">
+   <div class="play">▶️</div>
+   <div>
+    <h2 style="margin-bottom:4px">Lernvideo: Atommodell nach Dalton</h2>
+    <p class="muted">Das Video wird auf YouTube geöffnet. Für die übrige Lernumgebung ist keine Internetverbindung nötig.</p>
+    <a class="button btn" href="https://www.youtube.com/watch?v=kD_ClTRcQRQ" target="_blank" rel="noopener">YouTube-Video öffnen ↗</a>
+   </div>
+  </div>
+ </div>
+ <div class="card">
+  <h2>Nach dem Video: 3 kurze Fragen</h2>
+  <div class="qblock"><p><strong>1.</strong> Wozu dienen Modelle in der Chemie?</p>
+   <label class="option"><input type="radio" name="vq1" value="a"> Sie bilden jedes Detail der Wirklichkeit exakt ab.</label>
+   <label class="option"><input type="radio" name="vq1" value="b"> Sie vereinfachen Sachverhalte und machen sie anschaulicher.</label>
+   <label class="option"><input type="radio" name="vq1" value="c"> Sie ersetzen Experimente vollständig.</label></div>
+  <div class="qblock"><p><strong>2.</strong> Was passiert nach dem Dalton-Modell bei einer chemischen Reaktion?</p>
+   <label class="option"><input type="radio" name="vq2" value="a"> Atome werden vernichtet.</label>
+   <label class="option"><input type="radio" name="vq2" value="b"> Atome werden neu angeordnet.</label>
+   <label class="option"><input type="radio" name="vq2" value="c"> Es entstehen Atome aus dem Nichts.</label></div>
+  <div class="qblock"><p><strong>3.</strong> Was ist eine zentrale Aussage des Dalton-Modells?</p>
+   <label class="option"><input type="radio" name="vq3" value="a"> Stoffe bestehen aus kleinsten Teilchen/Atomen.</label>
+   <label class="option"><input type="radio" name="vq3" value="b"> Nur feste Stoffe bestehen aus Teilchen.</label>
+   <label class="option"><input type="radio" name="vq3" value="c"> Atome können bei jeder Reaktion verschwinden.</label></div>
+  <button class="btn" onclick="checkVideo()">Alle drei Antworten prüfen</button>
+  <div id="videoFeedback" class="feedback"></div>
+  <div id="videoHint" class="hint">Tipp: Denke an die Begriffe <strong>Modell</strong>, <strong>Atome</strong> und <strong>Neuordnung</strong>.</div>
+ </div>
+ <div class="nav"><button class="btn secondary" onclick="go(2)">Zurück</button><button class="btn" id="next3" disabled onclick="go(4)">Weiter</button></div>
+</section>
+
+<!-- SCHRITT 4 -->
+<section class="step" id="step4">
+ <div class="hero">
+  <div class="kicker">4 · Neu angeordnet</div>
+  <h1>Teilchen werden neu angeordnet</h1>
+  <p class="lead">Bei einer chemischen Reaktion gehen die Teilchen der Ausgangsstoffe nicht verloren. Sie verändern ihre Anordnung und bilden die Reaktionsprodukte.</p>
+ </div>
+
+ <div class="card">
+  <h2>Neu angeordnet</h2>
+  <p>Zwei Stoffe, nämlich die <strong>Ausgangsstoffe A und B</strong>, gehen eine chemische Reaktion ein. Jeder Ausgangsstoff besteht aus sehr vielen kleinsten Teilchen. Bei der chemischen Reaktion gehen die Teilchen der Stoffe A und B <strong>nicht verloren</strong>, sondern verändern nur ihre Anordnung. Auf diese Weise bilden sie das Reaktionsprodukt. Die Teilchen werden also nur <strong>umgruppiert</strong>.</p>
+  <div class="callout merksatz"><strong>Kernidee:</strong> Ausgangsstoffe → Umgruppierung der Teilchen → Reaktionsprodukt.</div>
+ </div>
+
+ <div class="card">
+  <h2>Aufgabe 4a · Verbrennung von Kohlenstoff</h2>
+  <p>Zeichne die Verbrennung von <strong>6 Kohlenstoffteilchen (C)</strong> an der Luft mit <strong>6 zweiatomigen Sauerstoff-Molekülen (O₂)</strong> im Teilchenmodell.</p>
+  <ul>
+   <li><strong>Kohlenstoffteilchen:</strong> schwarz</li>
+   <li><strong>Sauerstoffteilchen:</strong> rot</li>
+   <li>Ein O₂-Molekül besteht aus zwei Sauerstoffatomen.</li>
+   <li>Das Reaktionsprodukt ist Kohlenstoffdioxid (CO₂).</li>
+  </ul>
+  <div class="draw-wrap"><canvas id="canvas" width="1000" height="360"></canvas></div>
+  <div class="tools">
+   <button class="btn secondary tool active" id="penBtn" onclick="setTool('pen')">✏️ Zeichnen</button>
+   <button class="btn secondary tool" id="eraseBtn" onclick="setTool('erase')">⌫ Radierer</button>
+   <button class="btn secondary" onclick="clearCanvas()">Neu starten</button>
+  </div>
+  <div class="field"><label>Beschrifte dein Modell:</label><input id="drawLabel" type="text" placeholder="z. B. 6 C + 6 O₂ → 6 CO₂"></div>
+  <button class="btn" onclick="checkDrawing()">Modell prüfen</button>
+  <div id="drawFeedback" class="feedback"></div>
+  <div id="drawHint" class="hint">Tipp: 6 C-Atome reagieren mit 6 O₂-Molekülen. Jedes C-Atom verbindet sich mit zwei O-Atomen.</div>
+ </div>
+
+ <div class="card">
+  <h2>Aufgabe 4b · Schwefel und Eisen mit Playmais</h2>
+  <p>Im Schulbuch wird die Reaktion von <strong>Schwefel und Eisen</strong> als Beispiel für eine chemische Reaktion genutzt. Baue sie mit Playmais nach.</p>
+  <ol class="steps">
+   <li>Verwende <strong>gelbe Playmais-Teilchen für Schwefel</strong> und <strong>grüne Playmais-Teilchen für Eisen</strong>.</li>
+   <li>Lege zunächst gleich viele gelbe und grüne Teilchen als Ausgangsstoffe bereit, zum Beispiel 6 Schwefel- und 6 Eisenteilchen.</li>
+   <li>Ordne die Teilchen neu an: Je ein Eisen-Teilchen verbindet sich im Modell mit einem Schwefel-Teilchen.</li>
+   <li>Das Reaktionsprodukt heißt <strong>Eisensulfid</strong>.</li>
+  </ol>
+  <div class="digital-reaction">
+   <h3>Digitale Kontrolle</h3>
+   <p class="small">Klicke auf „Reaktion durchführen“, wenn du dein Playmais-Modell gebaut hast.</p>
+   <div class="model-row">
+    <div><div class="small">Eisen</div><div id="feParticles" class="particles"></div></div>
+    <div>+</div>
+    <div><div class="small">Schwefel</div><div id="sParticles" class="particles"></div></div>
+   </div>
+   <button class="btn" style="margin-top:12px" onclick="reactFeS()">Reaktion durchführen</button>
+   <div id="fesResult" class="particles" style="margin-top:12px;min-height:58px"></div>
+   <div id="fesFeedback" class="feedback"></div>
+  </div>
+ </div>
+
+ <div class="nav"><button class="btn secondary" onclick="go(3)">Zurück</button><button class="btn" id="next4" disabled onclick="go(5)">Weiter</button></div>
+</section>
+
+<!-- SCHRITT 5 -->
+<section class="step" id="step5">
+ <div class="hero">
+  <div class="kicker">5 · Massenerhaltung und Abschluss</div>
+  <h1>Warum bleibt die Masse erhalten?</h1>
+  <p class="lead">Wenn keine Teilchen verloren gehen und keine neuen Teilchen hinzukommen, bleibt auch die Masse erhalten.</p>
+ </div>
+
+ <div class="card">
+  <h2>Gesetz der Massenerhaltung</h2>
+  <p>Bei einer chemischen Reaktion gehen weder Teilchen verloren noch kommen welche neu hinzu. Daher bleibt auch die <strong>Masse der Teilchen</strong> gleich.</p>
+  <p>Das lässt sich am Beispiel der Reaktion von Eisen und Schwefel verdeutlichen: Lässt man <strong>32 g Schwefel</strong> mit <strong>56 g Eisen</strong> reagieren, so erhält man <strong>88 g Eisensulfid</strong>.</p>
+  <p>Bei einer Reaktion muss man darauf achten, <strong>alle Edukte und alle Produkte</strong> zu wiegen. Wenn beispielsweise eine Kerze verbrennt, wird Sauerstoff aus der Luft benötigt und es entstehen Gase, die in die Luft entweichen. Deshalb muss man die Gase auffangen und mitwiegen.</p>
+  <div class="callout merksatz"><strong>Gesetz der Massenerhaltung:</strong> Die Masse der Produkte ist in einem <strong>geschlossenen System</strong> gleich der Masse der Edukte.</div>
+  <div class="callout info"><strong>Merke:</strong> „geschlossen“ bedeutet hier: Es kann während der Reaktion kein Stoff unbemerkt aus dem System entweichen oder von außen hineingelangen.</div>
+ </div>
+
+ <div class="card">
+  <h2>Lückentext · Alles zusammenführen</h2>
+  <p>
+   Ein <input class="gap" id="g1"> ist eine vereinfachte Darstellung eines Sachverhalts. In der Chemie nutzt man Modelle, um Vorgänge auf der Ebene kleinster <input class="gap" id="g2"> anschaulich zu machen.
+   Alle <input class="gap" id="g3"> bestehen aus kleinsten Teilchen. Diese kleinsten Teilchen werden bei einem Element als <input class="gap" id="g4"> bezeichnet.
+   Sind mehrere Atome miteinander verbunden, können sie ein <input class="gap" id="g5"> bilden.
+   Bei einer chemischen <input class="gap" id="g6"> werden die Teilchen der <input class="gap" id="g7"> neu angeordnet.
+   Die Ausgangsstoffe heißen auch <input class="gap" id="g8">, die entstehenden Stoffe <input class="gap" id="g9">.
+   Die Teilchen werden dabei nur <input class="gap" id="g10">.
+   Deshalb gehen in einem geschlossenen System keine Teilchen verloren und keine neuen Teilchen hinzu. Nach dem Gesetz der <input class="gap" id="g11"> bleibt dadurch die <input class="gap" id="g12"> erhalten.
+  </p>
+  <h3>Wortkasten – alphabetisch geordnet</h3>
+  <div class="wordbank">
+   <span class="word" onclick="putWord('Atome')">Atome</span>
+   <span class="word" onclick="putWord('Atomsorte')">Atomsorte</span>
+   <span class="word" onclick="putWord('Ausgangsstoffe')">Ausgangsstoffe</span>
+   <span class="word" onclick="putWord('Edukte')">Edukte</span>
+   <span class="word" onclick="putWord('Gesetz der Massenerhaltung')">Gesetz der Massenerhaltung</span>
+   <span class="word" onclick="putWord('Masse')">Masse</span>
+   <span class="word" onclick="putWord('Modelle')">Modelle</span>
+   <span class="word" onclick="putWord('Molekül')">Molekül</span>
+   <span class="word" onclick="putWord('Neuordnung')">Neuordnung</span>
+   <span class="word" onclick="putWord('Produkte')">Produkte</span>
+   <span class="word" onclick="putWord('Reaktion')">Reaktion</span>
+   <span class="word" onclick="putWord('Stoffe')">Stoffe</span>
+   <span class="word" onclick="putWord('Teilchen')">Teilchen</span>
+   <span class="word" onclick="putWord('umgruppiert')">umgruppiert</span>
+  </div>
+  <button class="btn" onclick="checkGaps()">Lückentext prüfen</button>
+  <div id="gapFeedback" class="feedback"></div>
+  <div id="gapHint" class="hint">Tipp: Arbeite dich Satz für Satz vor. Die Begriffe im Wortkasten sind alphabetisch sortiert und können angeklickt werden.</div>
+ </div>
+
+ <div class="card">
+  <h2>Abschluss-Check · Mehrfachauswahl</h2>
+  <p><strong>Wähle alle vier richtigen Aussagen.</strong></p>
+  <label class="option"><input type="checkbox" name="final" value="a"> Modelle vereinfachen Sachverhalte, damit sie anschaulicher werden.</label>
+  <label class="option"><input type="checkbox" name="final" value="b"> Bei einer chemischen Reaktion werden vorhandene Teilchen neu angeordnet.</label>
+  <label class="option"><input type="checkbox" name="final" value="c"> Im geschlossenen System bleibt die Masse erhalten.</label>
+  <label class="option"><input type="checkbox" name="final" value="d"> Neue Stoffe können entstehen, obwohl die vorhandenen Atome erhalten bleiben.</label>
+  <label class="option"><input type="checkbox" name="final" value="e"> Bei einer chemischen Reaktion müssen Teilchen verschwinden, damit neue Stoffe entstehen.</label>
+  <button class="btn" onclick="checkFinal()">Abschluss prüfen</button>
+  <div id="finalFeedback" class="feedback"></div>
+ </div>
+
+ <div class="card" id="endCard" style="display:none">
+  <h2>🎓 Lernziel erreicht</h2>
+  <p>Du kannst jetzt auf Teilchenebene erklären, warum bei einer chemischen Reaktion in einem geschlossenen System keine Masse verloren geht.</p>
+  <div class="summary">
+   <div><strong>Modelle</strong><br><span class="small">vereinfachen Wirklichkeit</span></div>
+   <div><strong>Teilchen</strong><br><span class="small">werden neu angeordnet</span></div>
+   <div><strong>Massenerhaltung</strong><br><span class="small">Masse bleibt im geschlossenen System erhalten</span></div>
+  </div>
+  <button class="btn green" onclick="location.reload()" style="margin-top:15px">Lernumgebung neu starten</button>
+ </div>
+
+ <div class="nav"><button class="btn secondary" onclick="go(4)">Zurück</button><span></span></div>
+ <p class="small">Hinweis: Das Dalton-Modell ist ein historisches Modell. Es wird hier als vereinfachtes Modell genutzt, um die Neuordnung von Atomen und die Massenerhaltung zu erklären.</p>
+</section>
+</main>
+
+<script>
+let current=1,tool='pen',drawing=false,lastX=0,lastY=0;
+
+function go(n){
+ document.querySelectorAll('.step').forEach(x=>x.classList.remove('active'));
+ document.getElementById('step'+n).classList.add('active');
+ current=n;
+ document.getElementById('stepLabel').textContent='Schritt '+n+' von 5';
+ document.getElementById('percent').textContent=Math.round(n/5*100)+' %';
+ document.getElementById('progressBar').style.width=(n/5*100)+'%';
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function feedback(id,ok,msg){
+ const e=document.getElementById(id);e.className='feedback '+(ok?'ok':'bad');e.textContent=msg;
+}
+function checkTF(){
+ const correct={tf1:'r',tf2:'r',tf3:'f',tf4:'r',tf5:'f'};let ok=true;
+ for(const q in correct){const a=document.querySelector('input[name="'+q+'"]:checked');if(!a||a.value!==correct[q])ok=false;}
+ if(ok){feedback('tfFeedback',true,'Richtig. Du hast verstanden, warum Modelle und Teilchenmodelle in der Chemie verwendet werden.');document.getElementById('next1').disabled=false;document.getElementById('tfHint').classList.remove('show')}
+ else{feedback('tfFeedback',false,'Noch nicht richtig. Prüfe die Aussagen noch einmal.');document.getElementById('tfHint').classList.add('show')}
+}
+function checkModel(){
+ const vals=['m1','m2','m3','m4'].map(id=>document.getElementById(id).value.trim());
+ const text=document.getElementById('m5').value.trim();
+ const nums=vals.join(',')==='8,4,8,4';
+ const explanation=text.length>20&&/atom|teilchen|kugel|masse|erhalt|anzahl|gleich/i.test(text);
+ if(nums&&explanation){
+  feedback('modelFeedback',true,'Richtig. Vorher und nachher sind 8 Wasserstoff- und 4 Sauerstoff-Teilchen vorhanden. Die Teilchen wurden neu angeordnet, aber nicht entfernt.');
+  document.getElementById('next2').disabled=false;document.getElementById('modelHint').classList.remove('show');
+ }else{feedback('modelFeedback',false,'Noch nicht vollständig. Prüfe deine Zählung und erkläre, was mit den Teilchen passiert.');document.getElementById('modelHint').classList.add('show')}
+}
+function checkVideo(){
+ const correct={vq1:'b',vq2:'b',vq3:'a'};let ok=true;
+ for(const q in correct){const a=document.querySelector('input[name="'+q+'"]:checked');if(!a||a.value!==correct[q])ok=false;}
+ if(ok){feedback('videoFeedback',true,'Richtig. Die Kernaussagen des Videos passen zum Modell: Modelle vereinfachen, Stoffe bestehen aus kleinsten Teilchen und bei Reaktionen werden Atome neu angeordnet.');document.getElementById('next3').disabled=false;document.getElementById('videoHint').classList.remove('show')}
+ else{feedback('videoFeedback',false,'Mindestens eine Antwort ist noch nicht richtig. Versuche es erneut.');document.getElementById('videoHint').classList.add('show')}
+}
+function initCanvas(){
+ const c=document.getElementById('canvas'),ctx=c.getContext('2d');ctx.lineCap='round';ctx.lineJoin='round';
+ function pos(e){const r=c.getBoundingClientRect();return[(e.clientX-r.left)*c.width/r.width,(e.clientY-r.top)*c.height/r.height]}
+ c.addEventListener('pointerdown',e=>{drawing=true;[lastX,lastY]=pos(e);c.setPointerCapture(e.pointerId)});
+ c.addEventListener('pointermove',e=>{if(!drawing)return;const[x,y]=pos(e);ctx.strokeStyle=tool==='erase'?'#fff':'#172033';ctx.lineWidth=tool==='erase'?24:5;ctx.beginPath();ctx.moveTo(lastX,lastY);ctx.lineTo(x,y);ctx.stroke();[lastX,lastY]=[x,y]});
+ c.addEventListener('pointerup',()=>drawing=false);c.addEventListener('pointercancel',()=>drawing=false);
+}
+function setTool(t){tool=t;document.querySelectorAll('.tool').forEach(x=>x.classList.remove('active'));document.getElementById(t==='pen'?'penBtn':'eraseBtn').classList.add('active')}
+function clearCanvas(){const c=document.getElementById('canvas'),ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);document.getElementById('drawFeedback').className='feedback';document.getElementById('drawHint').classList.remove('show')}
+function checkDrawing(){
+ const c=document.getElementById('canvas'),ctx=c.getContext('2d'),data=ctx.getImageData(0,0,c.width,c.height).data;let ink=0;
+ for(let i=0;i<data.length;i+=16)if(data[i]<235||data[i+1]<235||data[i+2]<235)ink++;
+ const label=document.getElementById('drawLabel').value.trim();
+ const labelOk=/6/.test(label)&&(/C/.test(label)||/Kohlenstoff/i.test(label))&&(/O2|O₂/.test(label)||/Sauerstoff/i.test(label));
+ if(ink>180&&labelOk){feedback('drawFeedback',true,'Dein Teilchenmodell wurde gezeichnet und passend beschriftet. Fachlich gilt: 6 C + 6 O₂ → 6 CO₂.');document.getElementById('next4').disabled=false;document.getElementById('drawHint').classList.remove('show')}
+ else{feedback('drawFeedback',false,'Zeichne dein Teilchenmodell und beschrifte es mit 6 C und 6 O₂ als Ausgangsstoffen.');document.getElementById('drawHint').classList.add('show')}
+}
+function initFeS(){
+ const fe=document.getElementById('feParticles'),s=document.getElementById('sParticles');
+ for(let i=0;i<6;i++){const a=document.createElement('span');a.className='particle fe';a.textContent='Fe';fe.appendChild(a);const b=document.createElement('span');b.className='particle s';b.textContent='S';s.appendChild(b)}
+}
+function reactFeS(){
+ const out=document.getElementById('fesResult');out.innerHTML='';
+ for(let i=0;i<6;i++){const wrap=document.createElement('span');wrap.className='feS';const a=document.createElement('span');a.className='particle fe';a.textContent='Fe';const b=document.createElement('span');b.className='particle s';b.textContent='S';wrap.append(a,b);out.appendChild(wrap)}
+ feedback('fesFeedback',true,'Richtig: Aus je einem Eisen- und einem Schwefel-Teilchen entsteht im Modell ein Teilchen des neuen Stoffes Eisensulfid (FeS).');
+ document.getElementById('next4').disabled=false;
+}
+function putWord(word){for(let i=1;i<=12;i++){const e=document.getElementById('g'+i);if(!e.value){e.value=word;break}}}
+function checkGaps(){
+ const ans={g1:'Modelle',g2:'Teilchen',g3:'Stoffe',g4:'Atome',g5:'Molekül',g6:'Reaktion',g7:'Ausgangsstoffe',g8:'Edukte',g9:'Produkte',g10:'umgruppiert',g11:'Gesetz der Massenerhaltung',g12:'Masse'};let ok=true;
+ for(const id in ans)if(document.getElementById(id).value.trim().toLowerCase()!==ans[id].toLowerCase())ok=false;
+ if(ok){feedback('gapFeedback',true,'Richtig. Du hast die zentralen Fachbegriffe aus allen fünf Lernabschnitten sicher miteinander verknüpft.');document.getElementById('gapHint').classList.remove('show')}
+ else{feedback('gapFeedback',false,'Einige Lücken sind noch nicht richtig. Prüfe die Begriffe erneut und versuche es noch einmal.');document.getElementById('gapHint').classList.add('show')}
+}
+function checkFinal(){
+ const selected=[...document.querySelectorAll('input[name="final"]:checked')].map(x=>x.value).sort().join('');
+ if(selected==='abcd'){feedback('finalFeedback',true,'Richtig. Modelle vereinfachen, Teilchen werden neu angeordnet, die Masse bleibt im geschlossenen System erhalten und neue Stoffe können entstehen.');document.getElementById('endCard').style.display='block'}
+ else feedback('finalFeedback',false,'Noch nicht richtig. Es sind genau vier Aussagen richtig. Prüfe besonders die Aussage über das Verschwinden von Teilchen.');
+}
+initCanvas();initFeS();
+</script>
+</body>
+</html>
